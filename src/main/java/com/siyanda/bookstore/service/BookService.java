@@ -25,6 +25,9 @@ public class BookService {
     }
 
     public Book addBook(Book book) {
+        if (book.getPrice() < 0) {
+            throw new IllegalArgumentException("Price must be positive");
+        }
         return bookRepository.save(book);
     }
 }
