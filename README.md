@@ -19,8 +19,6 @@ Welcome to the Online Bookstore Application! This application allows users to pl
 - [Error Handling](#error-handling)
 - [Running the Application](#running-the-application)
 - [Testing](#testing)
-- [Contributing](#contributing)
-- [License](#license)
 
 ## Features
 
