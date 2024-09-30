@@ -7,8 +7,6 @@ import lombok.*;
 @Entity
 @NoArgsConstructor
 @AllArgsConstructor
-@Setter
-@Getter
 public class Book {
 
     @Id
@@ -28,4 +26,12 @@ public class Book {
     private double price;
 
     private int stock;
+
+    public Book(String isbn, String title, String author, double price, int stock) {
+        this.isbn = isbn;
+        this.title = title;
+        this.author = author;
+        this.price = price;
+        this.stock = stock;
+    }
 }
