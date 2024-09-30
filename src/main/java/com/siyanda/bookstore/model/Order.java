@@ -7,8 +7,6 @@ import lombok.*;
 @Entity
 @NoArgsConstructor
 @AllArgsConstructor
-@Getter
-@Setter
 @Table(name = "book_order")
 public class Order {
 
@@ -16,11 +14,21 @@ public class Order {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne
-    @JoinColumn(name = "book_id")
+    @ManyToOne(optional = false)
+    @JoinColumn(name = "book_id", nullable = false)
     private Book book;
 
+    @Column(nullable = false)
     private int quantity;
 
+    @Column(nullable = false)
     private double totalPrice;
+
+    public void calculateTotalPrice() {
+        if (book != null && quantity > 0) {
+            this.totalPrice = book.getPrice() * quantity;
+        } else {
+            this.totalPrice = 0;
+        }
+    }
 }

@@ -1,4 +1,3 @@
--- Create books table matching the Book entity
 CREATE TABLE IF NOT EXISTS book (
     id BIGINT AUTO_INCREMENT PRIMARY KEY,
     isbn VARCHAR(17) UNIQUE NOT NULL,
@@ -8,7 +7,6 @@ CREATE TABLE IF NOT EXISTS book (
     stock INT
     );
 
--- Insert sample data into books table
 INSERT INTO book (isbn, title, author, price, stock) VALUES
 ('978-0134685991', 'Effective Java', 'Joshua Bloch', 45.00, 10),
 ('978-0136083238', 'Clean Code', 'Robert C. Martin', 40.00, 5),
