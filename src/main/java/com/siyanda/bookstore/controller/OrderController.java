@@ -23,6 +23,10 @@ public class OrderController {
 
     @PostMapping
     public ResponseEntity<Order> placeOrder(@RequestParam String isbn, @RequestParam int quantity) {
+        if (quantity <= 0) {
+            return ResponseEntity.badRequest().body(null);
+        }
+
         Optional<Book> bookOptional = bookService.findBookByIsbn(isbn);
         if (bookOptional.isPresent()) {
             Order order = orderService.placeOrder(bookOptional.get(), quantity);
@@ -31,4 +35,5 @@ public class OrderController {
             return ResponseEntity.badRequest().body(null);
         }
     }
+
 }
