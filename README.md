@@ -1,135 +1,220 @@
-# Online Bookstore API
+# Online Bookstore Application
 
-## Description
-
-This is a simple online bookstore application built using Spring Boot and **Java 21+**. The application exposes a REST API for managing books and orders. It supports functionalities like looking up books, publishing new books, and placing orders.
+Welcome to the Online Bookstore Application! This application allows users to place orders for books, view available books, and manage their orders through a simple RESTful API built using Spring Boot. This project is designed to demonstrate key software development practices including API design, testing, and deployment.
 
 ## Table of Contents
 
 - [Features](hashtag#features)
 - [Technologies Used](hashtag#technologies-used)
 - [Getting Started](hashtag#getting-started)
-- [API Endpoints](hashtag#api-endpoints)
-- [Database Setup](hashtag#database-setup)
+ - [Prerequisites](hashtag#prerequisites)
+ - [Installation](hashtag#installation)
+ - [Configuration](hashtag#configuration)
+- [API Documentation](hashtag#api-documentation)
+ - [Base URL](hashtag#base-url)
+ - [Endpoints](hashtag#endpoints)
+ - [Place an Order](hashtag#place-an-order)
+ - [View All Books](hashtag#view-all-books)
+ - [Get Book by ISBN](hashtag#get-book-by-isbn)
+- [Error Handling](hashtag#error-handling)
 - [Running the Application](hashtag#running-the-application)
-- [Testing the API](hashtag#testing-the-api)
+- [Testing](hashtag#testing)
 - [Contributing](hashtag#contributing)
 - [License](hashtag#license)
 
 ## Features
 
-- Look up books by ISBN.
-- Publish a new book.
-- Place orders for books with quantity.
-- Response format in JSON or XML.
+- **Place an Order**: Users can place orders for books by specifying the ISBN and quantity.
+- **View Books**: List of all available books with their details.
+- **Get Book by ISBN**: Retrieve detailed information about a specific book using its ISBN.
+- **Error Handling**: Proper error handling for various scenarios such as insufficient stock, invalid input, and book not found.
+- **Unit Testing**: Comprehensive unit tests to ensure code reliability and correctness.
 
 ## Technologies Used
 
-- **Java 21+**
-- **Spring Boot** (Web, Data JPA)
-- **H2 Database** (in-memory)
-- **Lombok** (for boilerplate reduction)
-- **Maven** (for project management)
+- **Java 21+**: Programming language used for developing the application.
+- **Spring Boot**: Framework for building RESTful applications.
+- **Spring Data JPA**: For database interactions and Object-Relational Mapping (ORM).
+- **H2 Database**: An in-memory database for testing and development.
+- **JUnit 5**: For unit testing the application.
+- **Mockito**: For mocking dependencies in tests.
+- **Maven**: Dependency management and build tool.
 
 ## Getting Started
 
 ### Prerequisites
 
-- Java 21+
-- Maven
-- IntelliJ IDEA (or any IDE of your choice)
+Before running the application, ensure you have the following installed:
 
-### Cloning the Repository
+- [Java JDK 21+](https://www.oracle.com/java/technologies/javase/jdk11-downloads.html)
+- [Maven](https://maven.apache.org/download.cgi) (for dependency management and building the project)
+- An IDE (e.g., IntelliJ IDEA, Eclipse) for code editing.
 
-Clone this repository to your local machine using:
+### Installation
 
-```bash
-git clone https://github.com/yourusername/your-repository-name.git
+1. **Clone the repository:**
+
+ ```bash
+ git clone https://github.com/siyandamb/online-bookstore.git
+ cd online-bookstore
+ ```
+
+2. **Build the project using Maven:**
+
+ ```bash
+ mvn clean install
+ ```
+
+3. **Start the application:**
+
+ ```bash
+ mvn spring-boot:run
+ ```
+
+### Configuration
+
+- The application uses H2 as an in-memory database, which means no additional database setup is required for development.
+- You can modify the application properties in `src/main/resources/application.properties` if needed.
+
+## API Documentation
+
+### Base URL
+
+```
+http://localhost:8080/api
 ```
 
-## API Endpoints
+### Endpoints
 
-### Books
+#### Place an Order
 
-- **Get All Books**
+- **URL**: `/orders`
+- **Method**: `POST`
+- **Parameters**:
+ - `isbn` (String): The ISBN of the book.
+ - `quantity` (int): The quantity of the book to order.
+- **Request Body**:
 
- ```
- GET /api/books
- ```
-
-- **Get Book by ISBN**
-
- ```
- GET /api/books/{isbn}
- ```
-
-- **Add New Book**
-
- ```
- POST /api/books
- ```
-
- **Request Body:**
  ```json
  {
- "isbn": "1234567890",
- "title": "The Great Gatsby",
- "author": "F. Scott Fitzgerald",
- "price": 19.99,
- "stock": 10
+ "isbn": "978-0134685991",
+ "quantity": 2
  }
  ```
 
-### Orders
+- **Response**:
+ - `201 Created`: Order created successfully.
+ - `400 Bad Request`: Invalid request (e.g., book not found, quantity is zero).
 
-- **Place an Order**
+**Example Request**:
 
- ```
- POST /api/orders?isbn={isbn}&quantity={quantity}
- ```
+```http
+POST /api/orders
+Content-Type: application/json
 
-## Database Setup
-
-The application uses an in-memory H2 database. You can access the H2 console at:
-
+{
+ "isbn": "978-0134685991",
+ "quantity": 2
+}
 ```
-http://localhost:8080/h2-console
+
+**Example Response**:
+
+```json
+{
+ "message": "Order placed successfully",
+ "order": {
+ "isbn": "978-0134685991",
+ "quantity": 2,
+ "totalPrice": 90.00
+ }
+}
 ```
 
-### H2 Console Configuration
+#### View All Books
 
-- **JDBC URL**: `jdbc:h2:mem:bookstoredb`
-- **User Name**: `sa`
-- **Password**: `password`
+- **URL**: `/books`
+- **Method**: `GET`
+- **Response**: A list of all available books.
+
+**Example Request**:
+
+```http
+GET /api/books
+```
+
+**Example Response**:
+
+```json
+[
+ {
+ "isbn": "978-0134685991",
+ "title": "Effective Java",
+ "author": "Joshua Bloch",
+ "price": 45.00,
+ "stock": 10
+ },
+ {
+ "isbn": "978-0132952469",
+ "title": "Clean Code",
+ "author": "Robert C. Martin",
+ "price": 40.00,
+ "stock": 5
+ }
+]
+```
+
+#### Get Book by ISBN
+
+- **URL**: `/books/{isbn}`
+- **Method**: `GET`
+- **Response**: Detailed information about the specified book.
+
+**Example Request**:
+
+```http
+GET /api/books/978-0134685991
+```
+
+**Example Response**:
+
+```json
+{
+ "isbn": "978-0134685991",
+ "title": "Effective Java",
+ "author": "Joshua Bloch",
+ "price": 45.00,
+ "stock": 10
+}
+```
+
+### Error Handling
+
+The API provides meaningful error messages and HTTP status codes. Common scenarios include:
+
+- **400 Bad Request**: Returned for invalid input such as:
+ - When the quantity is less than or equal to zero.
+ - When the ISBN does not match any available books.
+- **404 Not Found**: Returned when trying to access a book that doesn't exist.
+- **500 Internal Server Error**: Returned for unexpected errors on the server side.
 
 ## Running the Application
 
-1. Open the project in IntelliJ IDEA.
-2. Ensure you have the required dependencies and configurations.
-3. Run the application by executing the `main` method in `BookstoreApplication.java`.
+To run the application, use the following command:
 
-The application will start on `http://localhost:8080`.
+```bash
+mvn spring-boot:run
+```
 
-## Testing the API
+The application will start on port 8080 by default. You can access the API using a REST client like Postman or cURL.
 
-You can test the API using **Postman** or **curl**.
+## Testing
 
-### Example Requests
+To run the unit tests, use the following command:
 
-- To publish a new book:
+```bash
+mvn test
+```
 
- ```bash
- curl -X POST http://localhost:8080/api/books -H "Content-Type: application/json" -d '{
- "isbn": "1234567890",
- "title": "The Great Gatsby",
- "author": "F. Scott Fitzgerald",
- "price": 19.99,
- "stock": 10
- }'
- ```
+This will execute all the tests in the project, ensuring that everything is functioning as expected. The test results will be available in the console output.
 
-- To place an order:
-
- ```bash
- curl -X POST "http://localhost:8080/api/orders?isbn=1234567890&quantity=2"
- ```
