@@ -15,10 +15,22 @@ public class OrderService {
     }
 
     public Order placeOrder(Book book, int quantity) {
+        if (book == null) {
+            throw new IllegalArgumentException("Book cannot be null");
+        }
+
+        if (quantity <= 0) {
+            throw new IllegalArgumentException("Quantity must be greater than zero");
+        }
+
+        if (quantity > book.getStock()) {
+            throw new IllegalArgumentException("Insufficient stock available");
+        }
+
         Order order = new Order();
         order.setBook(book);
         order.setQuantity(quantity);
-        order.setTotalPrice(book.getPrice() * quantity);
+        order.calculateTotalPrice();
         return orderRepository.save(order);
     }
 }
