@@ -1,6 +1,6 @@
 # Online Bookstore Application
 
-Welcome to the Online Bookstore Application! This application allows users to place orders for books, view available books, and manage their orders through a simple RESTful API built using Spring Boot. This project is designed to demonstrate key software development practices including API design, testing, and deployment.
+Welcome to the Online Bookstore Application! This application allows users to place orders for books, view available books, and manage their orders through a simple RESTful API built using Spring Boot. 
 
 ## Table of Contents
 
